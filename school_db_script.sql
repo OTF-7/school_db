@@ -41,7 +41,6 @@ create table guardian(
     primary key(guardian_id)
     );
 
-
 create table teacher(
 	teacher_id int not null auto_increment,
     first_name varchar(25) not null,
@@ -62,7 +61,7 @@ create table teacher(
     primary key(teacher_id)
     );
     
- create table exam(
+create table exam(
 	exam_id int not null auto_increment,
     student_id int not null,
     start_date date not null,
@@ -71,8 +70,7 @@ create table teacher(
     primary key(exam_id)
     );
     
-    
- create table exam_result(
+create table exam_result(
 	result_id int not null auto_increment,
 	exam_id int not null,
     student_id int not null,
@@ -80,8 +78,7 @@ create table teacher(
     primary key(result_id)
     );
     
-    
- create table subject(
+create table subject(
 	subject_id int not null auto_increment,
 	grade_id int not null,
     subject_name varchar(35) not null,
@@ -89,22 +86,20 @@ create table teacher(
     primary key(subject_id)
     );
     
-        
- create table teacher_subject(
+create table teacher_subject(
 	teacher_id int not null,
 	subject_id int not null,
     primary key(teacher_id, subject_id)
     );
     
- create table guardian_student(
+create table guardian_student(
 	guardian_id int not null,
 	student_id int not null,
 	guardian_student_relation varchar(30) not null,
     primary key(guardian_id, student_id)
     );
     
-    
-    create table grade(
+create table grade(
 	grade_id int not null auto_increment,
 	name varchar(30) not null,
 	grade_year year not null,
@@ -121,8 +116,7 @@ create table class(
 	start_time time not null,
     primary key(class_id)
     );
-    
-    
+        
 create table classroom(
 	classroom_id int not null auto_increment,
 	status boolean not null,
@@ -130,7 +124,7 @@ create table classroom(
     );
     
 create table classroom_student(
-	cla0ssroom_id int not null,
+	classroom_id int not null,
 	student_id int not null,
 	status boolean not null,
     primary key(student_id, classroom_id)
@@ -144,6 +138,51 @@ create table attendance(
 	status int not null,
     primary key(attendance_id)
     );
-    
+  
+  
+ALTER TABLE attendance ADD CONSTRAINT FK_attendance_student FOREIGN KEY (`student_id`) 
+REFERENCES student (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE guardian_student ADD CONSTRAINT FK_guardian_student_s_id FOREIGN KEY (`student_id`) 
+REFERENCES student (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE guardian_student ADD CONSTRAINT FK_guardian_student_g_id FOREIGN KEY (`guardian_id`) 
+REFERENCES guardian (`guardian_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE classroom_student ADD CONSTRAINT FK_classroom_student_s_id FOREIGN KEY (`student_id`) 
+REFERENCES student (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE classroom_student ADD CONSTRAINT FK_classroom_student_c_id FOREIGN KEY (`classroom_id`) 
+REFERENCES classroom (`classroom_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE class ADD CONSTRAINT FK_class_classroom FOREIGN KEY (`classroom_id`) 
+REFERENCES classroom (`classroom_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE class ADD CONSTRAINT FK_class_grade FOREIGN KEY (`grade_id`) 
+REFERENCES grade (`grade_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE class ADD CONSTRAINT FK_class_subject_id FOREIGN KEY (`subject_id`) 
+REFERENCES subject (`subject_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE class ADD CONSTRAINT FK_class_teacher FOREIGN KEY (`teacher_id`) 
+REFERENCES teacher (`teacher_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE teacher_subject ADD CONSTRAINT FK_teacher_subject_t_id FOREIGN KEY (`teacher_id`) 
+REFERENCES teacher (`teacher_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE teacher_subject ADD CONSTRAINT FK_teacher_subject_s_id FOREIGN KEY (`subject_id`) 
+REFERENCES subject (`subject_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE subject ADD CONSTRAINT FK_subject_grade FOREIGN KEY (`grade_id`) 
+REFERENCES grade (`grade_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE exam_result ADD CONSTRAINT FK_exam_result_student FOREIGN KEY (`student_id`) 
+REFERENCES student (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE exam_result ADD CONSTRAINT FK_exam_result_exam FOREIGN KEY (`exam_id`) 
+REFERENCES exam (`exam_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE exam ADD CONSTRAINT FK_exam_student FOREIGN KEY (`student_id`) 
+REFERENCES student (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
        
 show tables;
